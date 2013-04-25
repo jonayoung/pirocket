@@ -1,7 +1,8 @@
-pirocket
+pirocket - Pi Rocket Game
 ========
+An astroids clone written in Python using pygame for the Raspberry Pi
 
-Pi Rocket Game
+This repository will always be the latest version
 
 To run:
  - Download rocket.py & rocket.png
