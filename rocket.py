@@ -11,6 +11,8 @@ class rocket:
     self.velocityX = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
     self.velocityY = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
     self.image = pygame.image.load("rocket.png").convert() #The picture of the rocket!
+    self.width = self.image.get_width()
+    self.height = self.image.get_height()
 #Finished defining the rocket class  
 
 #Setup the Game
@@ -29,8 +31,6 @@ size = [displayInfo.current_w,displayInfo.current_h]  #Detect the width and heig
 screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
 screenSizeX = displayInfo.current_w  #Set the same variables as before for use later
 screenSizeY = displayInfo.current_h
-#Window Title
-pygame.display.set_caption("Pi Rocket")
  
 #Loop until the user clicks the close button.
 done = False
@@ -44,6 +44,9 @@ clock = pygame.time.Clock()
 #Instantiate the rocket class
 rocket = rocket()
 
+if debug:
+    print("Rocket Width:"+str(rocket.width))
+    print("Rocket Height:"+str(rocket.height))
 # -------- Main Program Loop -----------
 while done == False:
     # ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
