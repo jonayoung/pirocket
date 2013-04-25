@@ -52,6 +52,8 @@ while done == False:
           done = True # Flag that we are done so we exit this loop
         if event.type == pygame.KEYDOWN: #A Key was pressed down
           print("User pressed a key.")
+          if event.key == K_ESCAPE: #If the escape key is pressed exit the game
+            done = True 
           if event.key == K_UP: #Test for Up arrow
             rocket.velocityY = -rocket.speed # minus as we need to move up the screen
           if event.key == K_DOWN: #Test for Down arrow
