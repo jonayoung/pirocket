@@ -43,6 +43,9 @@ clock = pygame.time.Clock()
 
 #Instantiate the rocket class
 rocket = rocket()
+#Set the rocket to start in the middle
+rocket.posX = screenSizeX/2
+rocket.posY = screenSizeY/2
 
 if debug:
     print("Rocket Width:"+str(rocket.width))
@@ -79,12 +82,35 @@ while done == False:
     # ALL GAME LOGIC SHOULD GO BELOW THIS COMMENT
         
     # ALL GAME LOGIC SHOULD GO ABOVE THIS COMMENT
- 
-    #Move the rocket Y
-    rocket.posY = rocket.posY + rocket.velocityY
-    #Move the rocket X
-    rocket.posX = rocket.posX + rocket.velocityX
     
+    #Check the left hand border
+    if (rocket.posX + rocket.velocityX) <= 0:
+        rocket.posX = screenSizeX - rocket.width
+    else:
+        #Move the rocket X
+        rocket.posX = rocket.posX + rocket.velocityX
+        
+    #Check the right hand border    
+    if (rocket.posX + rocket.velocityX) >= screenSizeX:
+        rocket.posX = 0 + rocket.width
+    else:
+        rocket.posX = rocket.posX + rocket.velocityX
+    
+    #Check the top
+    if (rocket.posY + rocket.velocityY) <= 0:
+        print("Hit the top")
+        rocket.posY = screenSizeY - rocket.height
+    else:
+        #Move the rocket Y
+        rocket.posY = rocket.posY + rocket.velocityY
+        
+    #Check the bottom
+    if (rocket.posY + rocket.velocityY) >= screenSizeY:
+        rocket.posY = 0 + rocket.height
+    else:
+        #Move the rocket Y
+        rocket.posY = rocket.posY + rocket.velocityY        
+        
     if debug: 
       print('Rocket X Position:' + str(rocket.posX))
       print('Rocket Y Position:' + str(rocket.posY))
