@@ -2,9 +2,6 @@
 import pygame
 from pygame.locals import *
 
-screenSizeX = 700 #Screen Size X variable
-screenSizeY = 500 #Screen Size Y variable
-
 # Define the rocket class
 class rocket:
   def __init__(self):
@@ -26,10 +23,12 @@ red      = ( 255,   0,   0)
  
 pygame.init()
   
-# Set the width and height of the screen [width,height]
-size = [screenSizeX,screenSizeY]
-screen = pygame.display.set_mode(size)
- 
+# Set Game to be full screen
+displayInfo = pygame.display.Info() # This var holds info about the screen, see http://www.pygame.org/docs/ref/display.html#pygame.display.Info
+size = [displayInfo.current_w,displayInfo.current_h]  #Detect the width and height
+screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
+screenSizeX = displayInfo.current_w  #Set the same variables as before for use later
+screenSizeY = displayInfo.current_h
 #Window Title
 pygame.display.set_caption("Pi Rocket")
  
