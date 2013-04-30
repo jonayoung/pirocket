@@ -2,6 +2,15 @@
 import pygame
 from pygame.locals import *
 
+from random import randint  #import randint, to allow us to generate some randomness later
+
+# Define some colors  - We might use these later
+black    = (   0,   0,   0)
+white    = ( 255, 255, 255)
+green    = (   0, 255,   0)
+red      = ( 255,   0,   0)
+
+
 # Define the rocket class
 class rocket:
   def __init__(self):
@@ -11,17 +20,28 @@ class rocket:
     self.velocityX = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
     self.velocityY = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
     self.image = pygame.image.load("rocket.png").convert() #The picture of the rocket!
+    self.image.set_colorkey(white) #Removes the white background
     self.width = self.image.get_width()
     self.height = self.image.get_height()
 #Finished defining the rocket class  
 
-#Setup the Game
 
-# Define some colors  - We might use these later
-black    = (   0,   0,   0)
-white    = ( 255, 255, 255)
-green    = (   0, 255,   0)
-red      = ( 255,   0,   0)
+#Define the astroid class
+class asteroid(pygame.sprite.Sprite):
+  base_image = pygame.Surface((100,92)) # Set surface the same size as the image below.
+  
+  def __init__(self):
+    pygame.sprite.Sprite.__init__(self)
+    self.speed = 1 # Speed not yet used - might need to be done differently, Do we need an angle...?
+    self.x = 200 #X position
+    self.y = 200 #Y position
+    self.image = pygame.image.load("roid.jpg").convert() #The picture of the asteroid
+    self.rect = self.image.get_rect(center=(self.x,self.y)) #The rectangle, sets the starting position of the roid
+  
+  #def update(self):
+    #Will be used to move the roid
+    
+#Setup the Game
  
 pygame.init()
   
@@ -46,6 +66,15 @@ rocket = rocket()
 #Set the rocket to start in the middle
 rocket.posX = screenSizeX/2
 rocket.posY = screenSizeY/2
+
+
+#Create an sprite group to hold the astroids, see - http://www.pygame.org/docs/ref/sprite.html#pygame.sprite.Group
+asteroids = pygame.sprite.Group()
+
+#Add a starting asteroid
+roid1 = asteroid()
+asteroids.add(roid1)
+#Here we need a loop to populate the sprite group 
 
 if debug:
     print("Rocket Width:"+str(rocket.width))
@@ -79,6 +108,7 @@ while done == False:
             rocket.velocityX = 0
             
     # ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
+    
     # ALL GAME LOGIC SHOULD GO BELOW THIS COMMENT
         
     # ALL GAME LOGIC SHOULD GO ABOVE THIS COMMENT
@@ -114,12 +144,16 @@ while done == False:
     if debug: 
       print('Rocket X Position:' + str(rocket.posX))
       print('Rocket Y Position:' + str(rocket.posY))
+      
+    asteroids.update() # Move the roids?
+    
     # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
      
     # First, clear the screen to white. Don't put other drawing commands
     # above this, or they will be erased with this command.
-    
     screen.fill(white)
+    
+    asteroids.draw(screen) #Draw all the roids onto the screen, this method not explicitly defined as part of the Sprite class.
     
     screen.blit(rocket.image, [rocket.posX,rocket.posY]) #Draw the rocket onto the screen
 
