@@ -10,6 +10,16 @@ white    = ( 255, 255, 255)
 green    = (   0, 255,   0)
 red      = ( 255,   0,   0)
 
+#Setup the Game
+pygame.init()
+  
+# Set Game to be full screen
+displayInfo = pygame.display.Info() # This var holds info about the screen, see http://www.pygame.org/docs/ref/display.html#pygame.display.Info
+size = [displayInfo.current_w,displayInfo.current_h]  #Detect the width and height
+screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
+screenSizeX = displayInfo.current_w  #Set the same variables as before for use later
+screenSizeY = displayInfo.current_h
+
 
 # Define the rocket class
 class rocket:
@@ -28,29 +38,19 @@ class rocket:
 
 #Define the astroid class
 class asteroid(pygame.sprite.Sprite):
-  #colour = red
   base_image = pygame.Surface((100,92))
-  #pointlist = [(10,0), (30,0), (40,15), (35,25), (20,50), (5,50), (0,25)]
-  #pygame.draw.polygon(base_image,colour,pointlist)
   
   def __init__(self):
     pygame.sprite.Sprite.__init__(self)
-    self.speed = 1
-    self.x = randint(0,1000)
-    self.y = randint(0,1000)
-    self.image = pygame.transform.rotate(pygame.image.load("roid.jpg").convert(),randint(0,100))
+    self.speed = randint(0,100)
+    self.x = randint(0+self.base_image.get_width(),screenSizeX-self.base_image.get_width())
+    self.y = randint(0+self.base_image.get_height(),screenSizeY-self.base_image.get_height())
+    self.image = pygame.transform.rotate(pygame.image.load("roid.jpg").convert(),randint(0,360))
     self.image.set_colorkey(black) #Removes the black background
     self.rect = self.image.get_rect(center=(self.x,self.y))
   
-#Setup the Game
-pygame.init()
-  
-# Set Game to be full screen
-displayInfo = pygame.display.Info() # This var holds info about the screen, see http://www.pygame.org/docs/ref/display.html#pygame.display.Info
-size = [displayInfo.current_w,displayInfo.current_h]  #Detect the width and height
-screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
-screenSizeX = displayInfo.current_w  #Set the same variables as before for use later
-screenSizeY = displayInfo.current_h
+  def update(self):
+    print('Moving an Asteroid')
  
 #Loop until the user clicks the close button.
 done = False
@@ -74,8 +74,11 @@ asteroids = pygame.sprite.Group()
 #Populate the sprite group
 for i in range(0,20):
     tempRoid = asteroid()
+    #Check for collisions, see - http://www.pygame.org/docs/ref/sprite.html#pygame.sprite.spritecollide
+    #Needs to be done before we add it to asteroids list otherwise it will always match
+    pygame.sprite.spritecollide(tempRoid,asteroids, True)
     asteroids.add(tempRoid)  
-
+    
 if debug:
     print("Rocket Width:"+str(rocket.width))
     print("Rocket Height:"+str(rocket.height))
@@ -143,7 +146,7 @@ while done == False:
     if debug: 
       print('Rocket X Position:' + str(rocket.posX))
       print('Rocket Y Position:' + str(rocket.posY))
-      
+  
     asteroids.update()
     # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
      
