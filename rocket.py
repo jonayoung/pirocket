@@ -29,7 +29,7 @@ class rocket:
     self.posY = 0  #Where the rocket is on the Y axis
     self.velocityX = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
     self.velocityY = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
-    self.image = pygame.image.load("rocket.png").convert() #The picture of the rocket!
+    self.image = pygame.image.load("rocket-upright.jpg").convert() #The picture of the rocket!
     self.image.set_colorkey(white) #Removes the white background
     self.width = self.image.get_width()
     self.height = self.image.get_height()
