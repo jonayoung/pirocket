@@ -53,7 +53,7 @@ class asteroid(pygame.sprite.Sprite):
   def update(self):
     if self.x + self.speedX <= 0:
         self.x = screenSizeX
-    elif self.x + self.speedX == screenSizeX:
+    elif self.x + self.speedX >= screenSizeX:
         self.x = 0
     else:
         #Will be used to move the roid
