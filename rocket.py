@@ -42,7 +42,8 @@ class asteroid(pygame.sprite.Sprite):
   
   def __init__(self):
     pygame.sprite.Sprite.__init__(self)
-    self.speed = randint(0,100)
+    self.speedX = randint(-5,5)
+    self.speedY = randint(-5,5)
     self.x = randint(0+self.base_image.get_width(),screenSizeX-self.base_image.get_width())
     self.y = randint(0+self.base_image.get_height(),screenSizeY-self.base_image.get_height())
     self.image = pygame.transform.rotate(pygame.image.load("roid.jpg").convert(),randint(0,360))
@@ -50,7 +51,23 @@ class asteroid(pygame.sprite.Sprite):
     self.rect = self.image.get_rect(center=(self.x,self.y))
   
   def update(self):
-    print('Moving an Asteroid')
+    if self.x + self.speedX <= 0:
+        self.x = screenSizeX
+    elif self.x + self.speedX == screenSizeX:
+        self.x = 0
+    else:
+        #Will be used to move the roid
+        self.x = self.x + self.speedX
+
+    if self.y + self.speedY >= screenSizeY:
+        self.y = 0
+    elif self.y + self.speedY <= 0:
+        self.y = screenSizeY
+
+    else:
+        self.y = self.y + self.speedY
+
+    self.rect = self.image.get_rect(center=(self.x,self.y))
  
 #Loop until the user clicks the close button.
 done = False
