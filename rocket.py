@@ -22,7 +22,7 @@ screenSizeY = displayInfo.current_h
 
 
 # Define the rocket class
-class rocket:
+class rocket(pygame.sprite.Sprite):
   def __init__(self):
     self.speed = 10 #How big the steps of the rocket are (effectively speed)
     self.posX = 0  #Where the rocket is on the X axis
@@ -114,7 +114,12 @@ while done == False:
           if event.key == K_DOWN: #Test for Down arrow
             rocket.velocityY = rocket.speed
           if event.key == K_RIGHT:
-            rocket.velocityX = rocket.speed
+            #rocket.velocityX = rocket.speed
+            loc = rocket.image.center;
+            rot_sprite = pygame.transform.rotate(rocket.image,36)
+            rot_image.get_rect().center = loc
+            
+            #rocket.image = pygame.transform.rotozoom(rocket.image,2,1)
           if event.key == K_LEFT:
             rocket.velocityX = -rocket.speed # minus to move left
         if event.type == pygame.KEYUP: # A Key was released
@@ -122,8 +127,8 @@ while done == False:
             rocket.velocityY = 0 
           if event.key == K_DOWN:
             rocket.velocityY = 0
-          if event.key == K_RIGHT:
-            rocket.velocityX = 0
+          #if event.key == K_RIGHT:
+          #  rocket.velocityX = 0
           if event.key == K_LEFT:
             rocket.velocityX = 0
             
