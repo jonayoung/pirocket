@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 
 from random import randint  #import randint, to allow us to generate some randomness later
+from math import *
 
 # Define some colors  - We might use these later
 black    = (   0,   0,   0)
@@ -23,16 +24,34 @@ screenSizeY = displayInfo.current_h
 
 # Define the rocket class
 class rocket(pygame.sprite.Sprite):
+  base_image = pygame.image.load("rocket2.png").convert_alpha() #The picture of the rocket!
   def __init__(self):
     self.speed = 10 #How big the steps of the rocket are (effectively speed)
-    self.posX = 0  #Where the rocket is on the X axis
-    self.posY = 0  #Where the rocket is on the Y axis
+    self.posX = screenSizeX/2  #Where the rocket is on the X axis
+    self.posY = screenSizeY/2  #Where the rocket is on the Y axis
     self.velocityX = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
     self.velocityY = 0 #If 0 the rocket is still, otherwise it will move by this much next blip
-    self.image = pygame.image.load("rocket-upright.jpg").convert() #The picture of the rocket!
-    self.image.set_colorkey(white) #Removes the white background
+    self.turn_speed = 1
+    self.angle = 0
+    self.image = self.base_image.copy() # intial image
+    self.rect = self.image.get_rect(center=(self.posX,self.posY))
+    #self.image.set_colorkey(white) #Removes the white background
     self.width = self.image.get_width()
     self.height = self.image.get_height()
+    
+  def thrust(self):
+    a = radians(self.angle)
+    self.posX = floor(self.speed * cos(a))
+    self.posY = floor(self.speed * sin(a))
+  
+  def update(self):
+    self.rect.move_ip(self.posX,self.posY)
+    
+  def turn(self, direction): 
+    self.angle += self.turn_speed * direction
+    self.image = pygame.transform.rotate(self.base_image, -self.angle)
+    self.image.set_colorkey(white)
+    self.rect = self.image.get_rect(center=self.rect.center)
 #Finished defining the rocket class  
 
 
@@ -110,18 +129,20 @@ while done == False:
           if event.key == K_ESCAPE: #If the escape key is pressed exit the game
             done = True 
           if event.key == K_UP: #Test for Up arrow
-            rocket.velocityY = -rocket.speed # minus as we need to move up the screen
-          if event.key == K_DOWN: #Test for Down arrow
-            rocket.velocityY = rocket.speed
+            #rocket.velocityY = -rocket.speed # minus as we need to move up the screen
+            rocket.thrust()
+          #if event.key == K_DOWN: #Test for Down arrow
+          #  rocket.velocityY = rocket.speed
           if event.key == K_RIGHT:
             #rocket.velocityX = rocket.speed
-            loc = rocket.image.center;
-            rot_sprite = pygame.transform.rotate(rocket.image,36)
-            rot_image.get_rect().center = loc
-            
+            #loc = rocket.image.center;
+            #rot_sprite = pygame.transform.rotate(rocket.image,36)
+            #rot_image.get_rect().center = loc
+            rocket.turn(10)
             #rocket.image = pygame.transform.rotozoom(rocket.image,2,1)
           if event.key == K_LEFT:
-            rocket.velocityX = -rocket.speed # minus to move left
+            #rocket.velocityX = -rocket.speed # minus to move left
+            rocket.turn(-10)
         if event.type == pygame.KEYUP: # A Key was released
           if event.key == K_UP:
             rocket.velocityY = 0 
@@ -163,7 +184,9 @@ while done == False:
         rocket.posY = 0 + rocket.height
     else:
         #Move the rocket Y
-        rocket.posY = rocket.posY + rocket.velocityY        
+        rocket.posY = rocket.posY + rocket.velocityY
+        
+    rocket.update()        
         
     if debug: 
       print('Rocket X Position:' + str(rocket.posX))
