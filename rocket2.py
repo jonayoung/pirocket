@@ -3,17 +3,20 @@ import random
 from pygame.locals import *
 from math import *
 
+
 # initialise pygame
 pygame.init()
 displayInfo = pygame.display.Info() # This var holds info about the screen, see http://www.pygame.org/docs/ref/display.html#pygame.display.Info
 size = [displayInfo.current_w,displayInfo.current_h]  #Detect the width and height
 screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
 
+
 WINFLAGS = pygame.FULLSCREEN                  # set to pygame.FULLSCREEN for full-screen
 SCREENRECT = Rect(0, 0, displayInfo.current_w, displayInfo.current_h)     # the screen resolution
 NSTARS = 1000
 NASTEROIDS = 10
 FPS = 30
+
 
 # Initialize sprite groups
 render = pygame.sprite.RenderUpdates()
@@ -70,7 +73,7 @@ class Rocket(pygame.sprite.Sprite):
            self.rect.move_ip(0, -SCREENRECT.height)           
  
     def thrust(self):
-        a = radians(self.angle)
+        a = radians(self.angle - 90)
         self.vx += self.thrust_value * cos(a)
         self.vy += self.thrust_value * sin(a)
  
@@ -95,9 +98,11 @@ class Rocket(pygame.sprite.Sprite):
         tempBullet = Bullet(self.angle,self.rect.center[0],self.rect.center[1])
         render.add(tempBullet)
 
+
 class Bullet(pygame.sprite.Sprite):
     base_image = pygame.Surface((50, 50))
     pygame.draw.circle(base_image, GREEN, (25,25), 5,0)
+
 
     def __init__(self,angle,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -219,3 +224,4 @@ def main():
  
 # run main()
 if __name__ == '__main__': main()
+
