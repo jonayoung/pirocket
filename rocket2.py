@@ -95,7 +95,7 @@ class Rocket(pygame.sprite.Sprite):
  
     def fire(self):
         print("fire")
-        tempBullet = Bullet(self.angle,self.rect.center[0],self.rect.center[1])
+        tempBullet = Bullet(self.angle,self.rect.center[0],self.rect.center[1],self.vx,self.vy)
         render.add(tempBullet)
 
 
@@ -104,13 +104,16 @@ class Bullet(pygame.sprite.Sprite):
     pygame.draw.circle(base_image, GREEN, (25,25), 5,0)
 
 
-    def __init__(self,angle,x,y):
+    def __init__(self,angle,x,y,ship_vx,ship_vy):
         pygame.sprite.Sprite.__init__(self)
         self.image = self.base_image.copy()
-        print("Bullet x:"+str(x))        
+        print("Bullet x:"+str(x))
+        self.angle = angle        
         self.rect = self.image.get_rect(center=(x,y))
-        self.vx = 1
-        self.vy = 1
+        a = radians(self.angle-90)
+        self.speed = 10
+        self.vx = (ship_vx + round(cos(a))) + (ship_vx * self.speed) #self.speed * cos(a)
+        self.vy = (ship_vy + round(sin(a))) + (ship_vy * self.speed) #self.speed * sin(a)
     def update(self):
         self.rect.move_ip(self.vx, self.vy)        
             
